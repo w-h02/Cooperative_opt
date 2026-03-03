@@ -21,7 +21,7 @@ def Cov2(x1,x2):
             Knm[ii, jj] = np.exp(-(x1[ii] - x2[jj]) ** 2 )
     return Knm
 
-def solve(x,y, selection=True):
+def solve(x, y, selection = True):
     n = len(x)
 
     # you can either select the points among the ones you have:
