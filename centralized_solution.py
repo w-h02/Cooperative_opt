@@ -52,6 +52,27 @@ def solve(x, y, selection = True):
 
     return alpha, ind
 
+def solve2(x, y, x_m):
+    n = len(x)
+
+
+    M = Cov2(x, x_m)
+    A = (0.5**2)*Cov(x_m) + M.T @ M
+    b = M.T @ y
+
+    # here the regularization parameter nu is 1.0
+    A = A + 1.*np.eye(int(np.sqrt(n)))
+
+    # it is good to compute the max/min eigenvalues of A for later, but only for small-size matrices
+    if n<101:
+        ei, EI =np.linalg.eig(A)
+        vv = [min(ei), max(ei)]
+        print('Min and max eigenvalues of A : ', print(vv))
+
+    alpha = np.linalg.solve(A,b)
+
+    return alpha, ind
+
 def plot_me(x,y, alpha, ind, selection=True):
 
     plt.plot(x,y,'o')
