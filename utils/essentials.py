@@ -22,9 +22,9 @@ def Cov2(x1,x2):
             Knm[ii, jj] = np.exp(-(x1[ii] - x2[jj]) ** 2 )
     return Knm
 
-# Build the weight matrix by the Metropolis Hastings method
+# Build the mixing matrix by the Metropolis Hastings method
 
-def build_weight_matrix(A):
+def build_mixing_matrix(A):
     """
     entries:
      A: communication graph (matrix)
@@ -60,3 +60,24 @@ def local_gradient(alpha, agents_x_i, agents_y_i, x_m, sigma = 0.5, nu = 1.0, a 
            - Knm_i.T @ residual \
            + (nu / a) * alpha
     return grad
+
+def local_gradient_vector(alpha, agents_x, agents_y, x_m, sigma=0.5, nu=1.0, a=5):
+    """
+    Compute the local gradients for all agents
+    """
+    n_agents = len(agents_x)
+    m = len(x_m)
+    
+    grad_matrix = np.zeros((n_agents, m))
+
+    for i in range(n_agents):
+        grad = local_gradient(alpha, agents_x[i], agents_y[i], x_m, sigma=sigma, nu=nu, a=a)
+        grad_matrix[i, :] = grad.flatten() 
+
+    return grad_matrix
+
+def is_double_stoch(W):
+    """
+    Verifies if the matrix W is double stochastic
+    """
+    return np.allclose(W.sum(axis=1), 1) and np.allclose(W.sum(axis=0), 1)
