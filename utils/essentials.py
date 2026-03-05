@@ -71,8 +71,8 @@ def local_gradient_vector(alpha, agents_x, agents_y, x_m, sigma=0.5, nu=1.0, a=5
     grad_matrix = np.zeros((n_agents, m))
 
     for i in range(n_agents):
-        grad = local_gradient(alpha, agents_x[i], agents_y[i], x_m, sigma=sigma, nu=nu, a=a)
-        grad_matrix[i, :] = grad.flatten() 
+        grad = local_gradient(alpha[i, :], agents_x[i], agents_y[i], x_m, sigma=sigma, nu=nu, a=a)
+        grad_matrix[i, :] = grad.flatten()  
 
     return grad_matrix
 
